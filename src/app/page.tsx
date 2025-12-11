@@ -32,7 +32,7 @@ export default function Home() {
     const now = new Date();
     
     // --- TESTING CONFIG ---
-    const TEST_MODE = true;  // Set to false when deploying
+    const TEST_MODE = false;  // Set to false when deploying
     const TEST_DAYS_AGO = 7; // Change to 7 or 30 to test other buckets
     // ----------------------
 
