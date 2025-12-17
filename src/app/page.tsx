@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import questions from "@/data/questions.json";
 import QuestionCard from "@/components/QuestionCard";
 import { Question } from "@/types";
 import QuestionModal from "@/components/QuestionModel";
+import { supabase } from "@/lib/supabase";
+import LoginModal from "@/components/Login";
 
 const LEARNING_PATH = [
   "Arrays & Hashing",
@@ -35,6 +37,8 @@ const getDaysSince = (dateString: string) => {
 };
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null);
+  const [showLogin, setShowLogin] = useState(true);
   const [patternFilter, setPatternFilter] = useState("All");
   const [paceFilter, setPaceFilter] = useState<"Unsolved" | "Solved" | "All">(
     "Unsolved"
@@ -113,9 +117,23 @@ export default function Home() {
     return isDay3 || isDay7 || isDay30;
   });
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <div className="flex h-screen bg-gray-50 font-sans overflow-hidden">
-      {/* SIDEBAR (Unchanged) */}
+      {/* SIDEBAR */}
       <aside className="w-64 flex flex-col p-4 gap-4 bg-white border-r border-gray-200">
         <div className="px-2">
           <h1 className="font-extrabold text-2xl tracking-tight text-gray-900">
@@ -154,6 +172,30 @@ export default function Home() {
               </button>
             ))}
           </div>
+        </div>
+        {/* SIDEBAR FOOTER */}
+        <div className="mt-auto pt-4 border-t border-gray-100">
+          {user ? (
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-gray-500 truncate">Logged in as:</p>
+              <p className="text-xs font-bold text-gray-800 truncate mb-2">
+                {user.email}
+              </p>
+              <button
+                onClick={() => supabase.auth.signOut()}
+                className="text-xs text-red-500 hover:underline text-left"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowLogin(true)}
+              className="w-full bg-blue-600 text-white py-2 rounded text-xs font-bold hover:bg-blue-700 transition-colors"
+            >
+              Log In / Sign Up
+            </button>
+          )}
         </div>
       </aside>
 
@@ -264,6 +306,8 @@ export default function Home() {
           onClose={() => setSelectedQuestion(null)}
         />
       )}
+
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
     </div>
   );
 }
