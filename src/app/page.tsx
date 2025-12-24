@@ -224,7 +224,7 @@ export default function Home() {
             ) : (
               <button
                 onClick={() => setShowLogin(true)}
-                className="w-full bg-blue-600 text-white py-2 rounded text-xs font-bold hover:bg-blue-700 transition-colors"
+                className="w-full bg-blue-600 text-black py-2 rounded text-xs font-bold hover:bg-blue-700 transition-colors"
               >
                 Log In / Sign Up
               </button>
