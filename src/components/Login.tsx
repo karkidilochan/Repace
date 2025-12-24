@@ -44,7 +44,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
           <input
             type="email"
             placeholder="Email"
-            className="border p-3 rounded bg-gray-50"
+            className="border p-3 rounded bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -52,7 +52,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
           <input
             type="password"
             placeholder="Password"
-            className="border p-3 rounded bg-gray-50"
+            className="border p-3 rounded bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
