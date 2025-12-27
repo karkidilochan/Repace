@@ -2,8 +2,9 @@ export interface Question {
   id: number;
   title: string;
   pattern: string;
-  difficulty?: string;
-  link?: string;
+  difficulty: string;
+  link: string;
+  tag?: string;
 }
 
 export interface ModelProps {
@@ -24,7 +25,5 @@ export interface QuestionCardProps {
   link: string;
   isSolved: boolean;
   onToggle: (id: number) => void;
-  onCardClick: () => void;
-  // Optional: Show "3 days ago" in the card
   daysAgo?: number;
 }
